@@ -34,7 +34,6 @@ int parse(char *file)
 	while(str != NULL)
 	{
 		process(str);
-		//printf("-----\n%s\n", str);
 		str = strtok(NULL, "\n");
 
 	}
