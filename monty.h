@@ -7,7 +7,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-
+#include <string.h>
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -40,5 +40,5 @@ typedef struct instruction_s
 
 /* more functions go underneat here */
 int file_hndlr(char *filename);
-
+char *_strtok(char *str, const char *delims);
 #endif
