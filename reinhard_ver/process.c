@@ -5,18 +5,19 @@
  */
 int process(char *line)
 {
-	cmd_t *opc_s = NULL;//define the struct for the command and argument
-	int rt;
+	cmd_t *opc_s = NULL;//pointer to struct
+	size_t n = sizeof(cmd_t);
 
-	opc_s = malloc(sizeof(cmd_t));
+	opc_s = memset(malloc(sizeof(cmd_t)), 0, n);
+
 	opc_s->opcode = NULL;
 	opc_s->n = 0;	
 
-	rt = split(line, opc_s);
+	split(line, opc_s);
 
 	printf("^^^^%s\n", opc_s->opcode);//tests to help debug
-	printf("^^^^%d\n", opc_s->n);
-
+//	printf("^^^^%d\n", opc_s->n);
+	free(opc_s->opcode);
 	free(opc_s);
 	return (0);
 }
@@ -33,11 +34,10 @@ int process(char *line)
 int split(char *line, cmd_t *ptr)
 {
 	int i, j = 0;
-	char opcode_a[5];
-	char arg_a[5];
-	char *push_c;
+	char opcode_a[1024];
+	char arg_a[1024];
+	char *push_c = "push";
 
-	push_c = "push";
 	for (i = 0; line[i] != '\0'; i++)//to help ignore empty spaces at the front
 	{
 		if (line[i] != ' ')
@@ -52,7 +52,7 @@ int split(char *line, cmd_t *ptr)
 	}
 	opcode_a[j] = '\0';
 
-	ptr->opcode = opcode_a;
+	ptr->opcode = strdup(opcode_a);
 	//debugging
 	printf(">>>>>>%s\n", ptr->opcode);
 
@@ -65,7 +65,7 @@ int split(char *line, cmd_t *ptr)
 				break;
 		}
 		j = 0;
-		while (line[i] != ' ')
+		while (line[i] != '\0' && line[i] != ' ')
 		{
 			arg_a[j] = line[i];
 			i++;

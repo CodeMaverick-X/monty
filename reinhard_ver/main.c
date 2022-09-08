@@ -5,7 +5,7 @@
  */
 int main(int ac, char **av)
 {
-	char *file;
+	char *file = NULL;
 
 	if (ac != 2)
 	{
@@ -18,6 +18,8 @@ int main(int ac, char **av)
 	printf("%s", file);
 
 	parse(file);
+
+	free(file);
 	
 	return (0);
 }
@@ -28,7 +30,7 @@ int main(int ac, char **av)
  */
 int parse(char *file)
 {
-	char *str;
+	char *str = NULL;
 
 	str = strtok(file, "\n");
 	while(str != NULL)
