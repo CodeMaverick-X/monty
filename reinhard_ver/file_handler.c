@@ -7,16 +7,17 @@
 char *file_hndlr(char *filename)
 {
 	unsigned int fd;
-	void *buff;
+	void *buff = NULL;
 	ssize_t rd;
 	struct stat st;
 	off_t count;
 
 
 	stat(filename, &st);
-	count = st.st_size;
+	count = st.st_size + 50;
+	size_t n = count;
+	buff = memset(malloc(sizeof(char) * count), 0, n);
 
-	buff = malloc(sizeof(char) * count);
 	if (buff == NULL)
 	{
 		fprintf(stderr, "Error: malloc: Can't open file %s\n", filename);
