@@ -24,6 +24,8 @@ typedef struct stack_s
 	struct stack_s *next;
 } stack_t;
 
+extern stack_t *top;
+
 /**
  * struct instruction_s - opcode and its function
  * @opcode: the opcode
@@ -41,4 +43,6 @@ typedef struct instruction_s
 /* more functions go underneat here */
 int file_hndlr(char *filename);
 char *_strtok(char *str, const char *delims);
+stack_t *add_dnodeint_beg(stack_t **head, int n);
+char *loop_through_string(char **str, int line);
 #endif
