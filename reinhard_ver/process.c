@@ -5,13 +5,19 @@
  */
 int process(char *line)
 {
-	cmd_t opc_s;//define the struct for the command and argument
+	cmd_t *opc_s = NULL;//define the struct for the command and argument
 	int rt;
 
-	rt = split(line, &opc_s);
+	opc_s = malloc(sizeof(cmd_t));
+	opc_s->opcode = NULL;
+	opc_s->n = 0;	
 
-	printf("%s\n", opc_s.opcode);//tests to help debug
+	rt = split(line, opc_s);
 
+	printf("^^^^%s\n", opc_s->opcode);//tests to help debug
+	printf("^^^^%d\n", opc_s->n);
+
+	free(opc_s);
 	return (0);
 }
 /**
@@ -28,7 +34,10 @@ int split(char *line, cmd_t *ptr)
 {
 	int i, j = 0;
 	char opcode_a[5];
+	char arg_a[5];
+	char *push_c;
 
+	push_c = "push";
 	for (i = 0; line[i] != '\0'; i++)//to help ignore empty spaces at the front
 	{
 		if (line[i] != ' ')
@@ -43,7 +52,32 @@ int split(char *line, cmd_t *ptr)
 	}
 	opcode_a[j] = '\0';
 
-	ptr->opcode = strdup(opcode_a);
+	ptr->opcode = opcode_a;
+	//debugging
+	printf(">>>>>>%s\n", ptr->opcode);
+
+	if (strcmp(ptr->opcode, push_c) == 0);
+	{
+		printf("equalilty found\n");
+		for (; line[i] != '\0'; i++)
+		{
+			if (line[i] != ' ')
+				break;
+		}
+		j = 0;
+		while (line[i] != ' ')
+		{
+			arg_a[j] = line[i];
+			i++;
+			j++;
+		}
+		
+		arg_a[j] = '\0';
+
+		ptr->n = atoi(arg_a);
+		printf(">>>>>>%d\n", ptr->n);
+	}
+
 
 	
 	return (0);
