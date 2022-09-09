@@ -11,9 +11,15 @@ char *file_hndlr(char *filename)
 	ssize_t rd;
 	struct stat st;
 	off_t count;
+	int rt_s;
 
+	rt_s = stat(filename, &st);
+	if (rt_s == -1)
+	{
+		fprintf(stderr, "Error: Can't open file %s\n", filename);
+		return (NULL);
+	}
 
-	stat(filename, &st);
 	count = st.st_size + 50;
 	size_t n = count;
 	buff = memset(malloc(sizeof(char) * count), 0, n);
