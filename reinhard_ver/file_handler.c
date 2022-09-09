@@ -1,7 +1,8 @@
 #include "monty.h"
 /**
- * open a file and read its content to a buffer
+ * file_hndlr - open a file and read its content to a buffer
  * @filename: filename
+ *
  * Return: the buffer
  */
 char *file_hndlr(char *filename)
@@ -12,6 +13,7 @@ char *file_hndlr(char *filename)
 	struct stat st;
 	off_t count;
 	int rt_s;
+	size_t n;
 
 	rt_s = stat(filename, &st);
 	if (rt_s == -1)
@@ -21,7 +23,7 @@ char *file_hndlr(char *filename)
 	}
 
 	count = st.st_size + 50;
-	size_t n = count;
+	n = count;
 	buff = memset(malloc(sizeof(char) * count), 0, n);
 	if (buff == NULL)
 	{
@@ -36,7 +38,7 @@ char *file_hndlr(char *filename)
 		free(buff);
 		return (NULL);
 	}
-	
+
 	rd = read(fd, buff, count);
 	if (rd == -1)
 	{
@@ -44,8 +46,6 @@ char *file_hndlr(char *filename)
 		free(buff);
 		return (NULL);
 	}
-
 	return (buff);
-
 
 }

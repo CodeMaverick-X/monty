@@ -39,7 +39,16 @@ typedef struct instruction_s
 	char *opcode;
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
-
+/**
+ * struct command_s - cointainer for command/opcode
+ * @opcode: the opcode
+ * @n: the argumeent
+ * @line_num: line number
+ *
+ * Description: store the opcode its line number
+ * and its argument to allow ease of access
+ * by other functions and files
+ */
 typedef struct command_s
 {
 	char *opcode;
@@ -52,8 +61,16 @@ extern cmd_t *opc_s;
 /* more functions go underneat here */
 char *file_hndlr(char *filename);
 int helper(char *file);
-int process(stack_t *stack, char *line, unsigned int line_num);
+int process(stack_t **stack, char *line, unsigned int line_num);
 int split(char *line, cmd_t *ptr);
 void (*get_func(char *opcode_r))(stack_t **stack, unsigned int line_number);
+
+/* opcode funcions go here */
 void push(stack_t **stack, unsigned int line_number);
+void pall(stack_t **stack, unsigned int line_number);
+
+/* list functions go here */
+stack_t *add_nodeint(stack_t **stack, int n);
+void free_stack_t(stack_t *head);
+
 #endif

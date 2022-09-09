@@ -1,7 +1,10 @@
 #include "monty.h"
 /**
  * main - entry point of the program
+ * @ac: argument count
+ * @av: argument vector
  *
+ * Return: 0 on success or exit failure on error
  */
 int main(int ac, char **av)
 {
@@ -28,12 +31,15 @@ int main(int ac, char **av)
 	}
 
 	free(file);
-	
+
 	return (0);
 }
 /**
- * parse - execute the process function on each line
- * of the file
+ * helper - uses strtok to share the fike into lines
+ * and run the process function on them individually
+ * @file: pointer to buffer contailing the copied
+ * file
+ * Return: -1 on error and 0 on success
  *
  */
 int helper(char *file)
@@ -45,11 +51,12 @@ int helper(char *file)
 
 	line_num = 1;
 	str = strtok(file, "\n");
-	while(str != NULL)
+	while (str != NULL)
 	{
-		rt = process(stack, str, line_num);
+		rt = process(&stack, str, line_num);
 		if (rt == -1)
 		{
+			free_stack_t(stack);
 			return (-1);
 		}
 		str = strtok(NULL, "\n");
@@ -57,5 +64,6 @@ int helper(char *file)
 
 	}
 
+	free_stack_t(stack);
 	return (0);
 }

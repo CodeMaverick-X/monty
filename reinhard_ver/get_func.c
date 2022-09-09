@@ -1,12 +1,15 @@
 #include "monty.h"
 /**
+ * get_func - check for the appropriate func and return it
+ * @opcode_r: opcode to find match for
  *
+ * Return: function on succes or null on failure to match
  */
 void (*get_func(char *opcode_r))(stack_t **stack, unsigned int line_number)
 {
 	instruction_t opcode_a[] = {
 		{"push", push},
-	//	{"pall", pall},
+		{"pall", pall},
 		{NULL, NULL}
 	};
 

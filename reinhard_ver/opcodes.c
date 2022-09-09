@@ -1,15 +1,33 @@
 #include "monty.h"
 /**
- * should contain the operation codes
+ * push - pushes arg to the stack with the hrlp
+ * of add_nodeint func
+ * @stack: double pointer to stack
+ * @line_number: line number of command
  */
 void push(stack_t **stack, unsigned int line_number)
 {
 	int num;
 
 	num = opc_s->n;
-	printf("argument for push is %d\n", num);
-	printf("line number for this command is %u\n", opc_s->line_num);
 
-	//now you can access the opcode,the argument, and the line number
-	
+	add_nodeint(stack, num);
+
+
+}
+
+/**
+ * pall - print all intigers in the stack
+ * @stack: double pointer to stack
+ * @line_number: line number of command
+ */
+void pall(stack_t **stack, unsigned int line_number)
+{
+	stack_t *tmp = *stack;
+
+	while (tmp != NULL)
+	{
+		printf("%d\n", tmp->n);
+		tmp = tmp->next;
+	}
 }

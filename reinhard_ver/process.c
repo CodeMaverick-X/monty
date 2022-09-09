@@ -1,11 +1,14 @@
 #include "monty.h"
-cmd_t *opc_s = NULL;//pointer to struct
+cmd_t *opc_s = NULL;
 
 /**
- * to test and compare the opcodes
- * not yet completed
+ * process - split the line to get the opcode and the argument
+ * @stack: double pointer to stack
+ * @line: line from the file
+ * @line_num: line number
+ * Return: o on success -1 on error
  */
-int process(stack_t *stack, char *line, unsigned int line_num)
+int process(stack_t **stack, char *line, unsigned int line_num)
 {
 	size_t n = sizeof(cmd_t);
 	void (*func)(stack_t **stack, unsigned int line_number);
@@ -19,7 +22,7 @@ int process(stack_t *stack, char *line, unsigned int line_num)
 
 	opc_s->opcode = NULL;
 	opc_s->n = 0;
-	opc_s->line_num = line_num;	
+	opc_s->line_num = line_num;
 
 	split(line, opc_s);
 
@@ -32,9 +35,7 @@ int process(stack_t *stack, char *line, unsigned int line_num)
 		return (-1);
 	}
 
-	func(&stack, line_num);
-	
-
+	func(stack, line_num);
 
 	free(opc_s->opcode);
 	free(opc_s);
@@ -57,13 +58,13 @@ int split(char *line, cmd_t *ptr)
 	char arg_a[1024];
 	char *push_c = "push";
 
-	for (i = 0; line[i] != '\0'; i++)//to help ignore empty spaces at the front
+	for (i = 0; line[i] != '\0'; i++)
 	{
 		if (line[i] != ' ')
 			break;
 	}
 
-	while (line[i] != ' ')
+	while (line[i] != ' ' && line[i] != '\0')
 	{
 		opcode_a[j] = line[i];
 		i++;
@@ -73,7 +74,7 @@ int split(char *line, cmd_t *ptr)
 
 	ptr->opcode = strdup(opcode_a);
 
-	if (strcmp(ptr->opcode, push_c) == 0);
+	if (strcmp(ptr->opcode, push_c) == 0)
 	{
 		for (; line[i] != '\0'; i++)
 		{
@@ -87,13 +88,11 @@ int split(char *line, cmd_t *ptr)
 			i++;
 			j++;
 		}
-		
+
 		arg_a[j] = '\0';
 
 		ptr->n = atoi(arg_a);
 	}
 
-
-	
 	return (0);
 }
