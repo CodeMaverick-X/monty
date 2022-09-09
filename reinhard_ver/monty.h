@@ -44,12 +44,16 @@ typedef struct command_s
 {
 	char *opcode;
 	int n;
+	unsigned int line_num;
 } cmd_t;
+
+extern cmd_t *opc_s;
 
 /* more functions go underneat here */
 char *file_hndlr(char *filename);
-int parse(char *file);
-int process(char *line);
+int helper(char *file);
+int process(stack_t *stack, char *line, unsigned int line_num);
 int split(char *line, cmd_t *ptr);
-
+void (*get_func(char *opcode_r))(stack_t **stack, unsigned int line_number);
+void push(stack_t **stack, unsigned int line_number);
 #endif

@@ -17,7 +17,7 @@ int main(int ac, char **av)
 
 	printf("%s", file);
 
-	parse(file);
+	helper(file);
 
 	free(file);
 	
@@ -28,15 +28,19 @@ int main(int ac, char **av)
  * of the file
  *
  */
-int parse(char *file)
+int helper(char *file)
 {
+	stack_t *stack = NULL;
 	char *str = NULL;
+	unsigned int line_num;
 
+	line_num = 1;
 	str = strtok(file, "\n");
 	while(str != NULL)
 	{
-		process(str);
+		process(stack, str, line_num);
 		str = strtok(NULL, "\n");
+		line_num++;
 
 	}
 

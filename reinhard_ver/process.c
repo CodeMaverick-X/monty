@@ -1,22 +1,37 @@
 #include "monty.h"
+cmd_t *opc_s = NULL;//pointer to struct
+
 /**
  * to test and compare the opcodes
  * not yet completed
  */
-int process(char *line)
+int process(stack_t *stack, char *line, unsigned int line_num)
 {
 	cmd_t *opc_s = NULL;//pointer to struct
 	size_t n = sizeof(cmd_t);
+	void (*func)(stack_t **stack, unsigned int line_number);
 
 	opc_s = memset(malloc(sizeof(cmd_t)), 0, n);
 
 	opc_s->opcode = NULL;
-	opc_s->n = 0;	
+	opc_s->n = 0;
+	opc_s->line_num = line_num;	
 
 	split(line, opc_s);
 
-	printf("^^^^%s\n", opc_s->opcode);//tests to help debug
-//	printf("^^^^%d\n", opc_s->n);
+	func = get_func(opc_s->opcode);
+	if (!func)
+	{
+		printf("error, file not found in line %u\n", line_num);
+		free(opc_s->opcode);
+		free(opc_s);
+		return (-1);
+	}
+
+	func(&stack, line_num);
+	
+
+
 	free(opc_s->opcode);
 	free(opc_s);
 	return (0);
@@ -53,12 +68,9 @@ int split(char *line, cmd_t *ptr)
 	opcode_a[j] = '\0';
 
 	ptr->opcode = strdup(opcode_a);
-	//debugging
-	printf(">>>>>>%s\n", ptr->opcode);
 
 	if (strcmp(ptr->opcode, push_c) == 0);
 	{
-		printf("equalilty found\n");
 		for (; line[i] != '\0'; i++)
 		{
 			if (line[i] != ' ')
@@ -75,7 +87,6 @@ int split(char *line, cmd_t *ptr)
 		arg_a[j] = '\0';
 
 		ptr->n = atoi(arg_a);
-		printf(">>>>>>%d\n", ptr->n);
 	}
 
 
