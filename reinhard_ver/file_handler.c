@@ -17,25 +17,26 @@ char *file_hndlr(char *filename)
 	count = st.st_size + 50;
 	size_t n = count;
 	buff = memset(malloc(sizeof(char) * count), 0, n);
-
 	if (buff == NULL)
 	{
-		fprintf(stderr, "Error: malloc: Can't open file %s\n", filename);
-		exit(EXIT_FAILURE);
+		fprintf(stderr, "Error: malloc failed");
+		return (NULL);
 	}
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", filename);
-		exit(EXIT_FAILURE);
+		free(buff);
+		return (NULL);
 	}
 	
 	rd = read(fd, buff, count);
 	if (rd == -1)
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", filename);
-		exit(EXIT_FAILURE);
+		free(buff);
+		return (NULL);
 	}
 
 	return (buff);

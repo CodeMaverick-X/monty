@@ -11,6 +11,11 @@ int process(stack_t *stack, char *line, unsigned int line_num)
 	void (*func)(stack_t **stack, unsigned int line_number);
 
 	opc_s = memset(malloc(sizeof(cmd_t)), 0, n);
+	if (opc_s == NULL)
+	{
+		fprintf(stderr, "Error: malloc failed");
+		return (-1);
+	}
 
 	opc_s->opcode = NULL;
 	opc_s->n = 0;
@@ -21,7 +26,7 @@ int process(stack_t *stack, char *line, unsigned int line_num)
 	func = get_func(opc_s->opcode);
 	if (!func)
 	{
-		printf("error, file not found in line %u\n", line_num);
+		printf("L%u: unknown instruction %s\n", line_num, opc_s->opcode);
 		free(opc_s->opcode);
 		free(opc_s);
 		return (-1);

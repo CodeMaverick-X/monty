@@ -6,6 +6,7 @@
 int main(int ac, char **av)
 {
 	char *file = NULL;
+	int rt_m;
 
 	if (ac != 2)
 	{
@@ -14,10 +15,17 @@ int main(int ac, char **av)
 	}
 
 	file = file_hndlr(av[1]);
+	if (file == NULL)
+		exit(EXIT_FAILURE);
 
 	printf("%s", file);
 
-	helper(file);
+	rt_m = helper(file);
+	if (rt_m == -1)
+	{
+		free(file);
+		exit(EXIT_FAILURE);
+	}
 
 	free(file);
 	
@@ -33,12 +41,17 @@ int helper(char *file)
 	stack_t *stack = NULL;
 	char *str = NULL;
 	unsigned int line_num;
+	int rt;
 
 	line_num = 1;
 	str = strtok(file, "\n");
 	while(str != NULL)
 	{
-		process(stack, str, line_num);
+		rt = process(stack, str, line_num);
+		if (rt == -1)
+		{
+			return (-1);
+		}
 		str = strtok(NULL, "\n");
 		line_num++;
 
