@@ -7,5 +7,9 @@ void push(stack_t **stack, unsigned int line_number)
 	int num;
 
 	num = opc_s->n;
-	printf("from push%d\n", num);
+	printf("argument for push is %d\n", num);
+	printf("line number for this command is %u\n", opc_s->line_num);
+
+	//now you can access the opcode,the argument, and the line number
+	
 }

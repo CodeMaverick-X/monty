@@ -7,7 +7,6 @@ cmd_t *opc_s = NULL;//pointer to struct
  */
 int process(stack_t *stack, char *line, unsigned int line_num)
 {
-	cmd_t *opc_s = NULL;//pointer to struct
 	size_t n = sizeof(cmd_t);
 	void (*func)(stack_t **stack, unsigned int line_number);
 
