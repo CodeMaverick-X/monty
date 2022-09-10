@@ -7,7 +7,7 @@
  */
 char *file_hndlr(char *filename)
 {
-	unsigned int fd;
+	unsigned int fd, f_err = 0;
 	void *buff = NULL;
 	ssize_t rd;
 	struct stat st;
@@ -32,7 +32,7 @@ char *file_hndlr(char *filename)
 	}
 
 	fd = open(filename, O_RDONLY);
-	if (fd == -1)
+	if (fd < f_err)
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", filename);
 		free(buff);
@@ -40,7 +40,7 @@ char *file_hndlr(char *filename)
 	}
 
 	rd = read(fd, buff, count);
-	if (rd == -1)
+	if (rd < f_err)
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", filename);
 		free(buff);

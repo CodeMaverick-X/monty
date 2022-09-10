@@ -8,7 +8,7 @@
 void push(stack_t **stack, unsigned int line_number)
 {
 	int num;
-
+	(void)line_number;
 	num = opc_s->n;
 
 	add_nodeint(stack, num);
@@ -25,6 +25,7 @@ void pall(stack_t **stack, unsigned int line_number)
 {
 	stack_t *tmp = *stack;
 
+	(void)line_number;
 	while (tmp != NULL)
 	{
 		printf("%d\n", tmp->n);

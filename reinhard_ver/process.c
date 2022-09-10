@@ -1,5 +1,6 @@
 #include "monty.h"
 cmd_t *opc_s = NULL;
+char *strdup(const char *);
 
 /**
  * process - split the line to get the opcode and the argument
