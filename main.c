@@ -1,67 +1,74 @@
 #include "monty.h"
-/**
- * main - entry point of the program
- * @ac: argument count
- * @av: argument vector
- *
- * Return: 0 on success or exit failure on error
- */
-int main(int ac, char **av)
-{
-	char *file = NULL;
-	int rt_m;
+#include "lists.h"
 
-	if (ac != 2)
+data_t data = DATA_INIT;
+
+/**
+ * monty - helper function for main function
+ * @args: pointer to struct of arguments from main
+ *
+ * Description: opens and reads from the file
+ * containing the opcodes, and calls the function
+ * that will find the corresponding executing function
+ */
+void monty(args_t *args)
+{
+	size_t len = 0;
+	int get = 0;
+	void (*code_func)(stack_t **, unsigned int);
+
+	if (args->ac != 2)
 	{
-		fprintf(stderr, "USAGE: monty file\n");
+		dprintf(STDERR_FILENO, USAGE);
 		exit(EXIT_FAILURE);
 	}
-
-	file = file_hndlr(av[1]);
-	if (file == NULL)
-		exit(EXIT_FAILURE);
-
-	rt_m = helper(file);
-	if (rt_m == -1)
+	data.fptr = fopen(args->av, "r");
+	if (!data.fptr)
 	{
-		free(file);
+		dprintf(STDERR_FILENO, FILE_ERROR, args->av);
 		exit(EXIT_FAILURE);
 	}
-
-	free(file);
-
-	return (0);
-}
-/**
- * helper - uses strtok to share the fike into lines
- * and run the process function on them individually
- * @file: pointer to buffer contailing the copied
- * file
- * Return: -1 on error and 0 on success
- *
- */
-int helper(char *file)
-{
-	stack_t *stack = NULL;
-	char *str = NULL;
-	unsigned int line_num;
-	int rt;
-
-	line_num = 1;
-	str = strtok(file, "\n");
-	while (str != NULL)
+	while (1)
 	{
-		rt = process(&stack, str, line_num);
-		if (rt == -1)
+		args->line_number++;
+		get = getline(&(data.line), &len, data.fptr);
+		if (get < 0)
+			break;
+		data.words = strtow(data.line);
+		if (data.words[0] == NULL || data.words[0][0] == '#')
 		{
-			free_stack_t(stack);
-			return (-1);
+			free_all(0);
+			continue;
 		}
-		str = strtok(NULL, "\n");
-		line_num++;
-
+		code_func = get_func(data.words);
+		if (!code_func)
+		{
+			dprintf(STDERR_FILENO, UNKNOWN, args->line_number, data.words[0]);
+			free_all(1);
+			exit(EXIT_FAILURE);
+		}
+		code_func(&(data.stack), args->line_number);
+		free_all(0);
 	}
+	free_all(1);
+}
 
-	free_stack_t(stack);
-	return (0);
+/**
+ * main - entry point for monty bytecode interpreter
+ * @argc: number of arguments
+ * @argv: array of arguments
+ *
+ * Return: EXIT_SUCCESS or EXIT_FAILURE
+ */
+int main(int argc, char *argv[])
+{
+	args_t args;
+
+	args.av = argv[1];
+	args.ac = argc;
+	args.line_number = 0;
+
+	monty(&args);
+
+	return (EXIT_SUCCESS);
 }
