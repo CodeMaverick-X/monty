@@ -32,3 +32,12 @@ void pall(stack_t **stack, unsigned int line_number)
 		tmp = tmp->next;
 	}
 }
+
+void pint(stack_t **stack, unsigned int line_number)
+{
+	(void)line_number;
+	stack_t *tmp = *stack;
+
+	printf("%d\n", tmp->n); 
+
+}

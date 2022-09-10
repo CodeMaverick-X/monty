@@ -68,6 +68,7 @@ void (*get_func(char *opcode_r))(stack_t **stack, unsigned int line_number);
 /* opcode funcions go here */
 void push(stack_t **stack, unsigned int line_number);
 void pall(stack_t **stack, unsigned int line_number);
+void pint(stack_t **stack, unsigned int line_number);
 
 /* list functions go here */
 stack_t *add_nodeint(stack_t **stack, int n);

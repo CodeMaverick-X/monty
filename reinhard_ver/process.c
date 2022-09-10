@@ -14,7 +14,9 @@ int process(stack_t **stack, char *line, unsigned int line_num)
 	size_t n = sizeof(cmd_t);
 	void (*func)(stack_t **stack, unsigned int line_number);
 	char *push_c;
+	char *pint_c;
 
+	pint_c = "pint";
 	push_c = "push";
 	opc_s = memset(malloc(sizeof(cmd_t)), 0, n);
 	if (opc_s == NULL)
@@ -32,6 +34,13 @@ int process(stack_t **stack, char *line, unsigned int line_num)
 	if ((strcmp(opc_s->opcode, push_c) == 0) && (opc_s->n == 0))
 	{
 		fprintf(stderr, "L%u: usage: push integer\n", line_num);
+		free(opc_s->opcode);
+		free(opc_s);
+		return (-1);
+	}
+	if ((strcmp(opc_s->opcode, pint_c) == 0) && (*stack == NULL))
+	{
+		fprintf(stderr, "L%u: can't pint, stack empty\n", line_num);
 		free(opc_s->opcode);
 		free(opc_s);
 		return (-1);
