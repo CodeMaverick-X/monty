@@ -12,11 +12,13 @@ int process(stack_t **stack, char *line, unsigned int line_num)
 {
 	size_t n = sizeof(cmd_t);
 	void (*func)(stack_t **stack, unsigned int line_number);
+	char *push_c;
 
+	push_c = "push";
 	opc_s = memset(malloc(sizeof(cmd_t)), 0, n);
 	if (opc_s == NULL)
 	{
-		fprintf(stderr, "Error: malloc failed");
+		fprintf(stderr, "Error: malloc failed\n");
 		return (-1);
 	}
 
@@ -26,10 +28,18 @@ int process(stack_t **stack, char *line, unsigned int line_num)
 
 	split(line, opc_s);
 
+	if ((strcmp(opc_s->opcode, push_c) == 0) && (opc_s->n == 0))
+	{
+		fprintf(stderr, "L%u: usage: push integer\n", line_num);
+		free(opc_s->opcode);
+		free(opc_s);
+		return (-1);
+	}
+
 	func = get_func(opc_s->opcode);
 	if (!func)
 	{
-		printf("L%u: unknown instruction %s\n", line_num, opc_s->opcode);
+		fprintf(stderr, "L%u: unknown instruction %s\n", line_num, opc_s->opcode);
 		free(opc_s->opcode);
 		free(opc_s);
 		return (-1);
